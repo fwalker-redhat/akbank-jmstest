@@ -1,0 +1,86 @@
+﻿kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: jboss-cli
+  namespace: akbank-eap
+  uid: 04191b29-1abe-4d4d-8c02-65fe3ee9663c
+  resourceVersion: '2556662'
+  creationTimestamp: '2023-05-19T12:28:10Z'
+  managedFields:
+    - manager: kubectl-create
+      operation: Update
+      apiVersion: v1
+      time: '2023-05-19T12:28:10Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:data':
+          .: {}
+          'f:postconfigure.sh': {}
+    - manager: Mozilla
+      operation: Update
+      apiVersion: v1
+      time: '2023-05-23T07:50:24Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:data':
+          'f:extensions.cli': {}
+data:
+  extensions.cli: >
+    embed-server --std-out=echo  --server-config=standalone-openshift.xml
+
+    batch
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra:add(archive=wmq.jmsra.rar,
+    transaction-support=XATransaction, statistics-enabled=true)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/admin-objects=testqueue:add(class-name=com.ibm.mq.connector.outbound.MQQueueProxy,
+    jndi-name=java:jboss/testqueue)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/admin-objects=testqueue/config-properties=baseQueueName:add(value=DEV.QUEUE.1)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/admin-objects=testqueue/config-properties=baseQueueManagerName:add(value=QM1)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1:add(class-name=com.ibm.mq.connector.outbound.ManagedQueueConnectionFactoryImpl,
+    jndi-name=java:jboss/jms/ffmQueueCF2, enabled=true, sharable=true,
+    use-java-context=true)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1/config-properties=hostName:add(value=192.168.124.1)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1/config-properties=port:add(value=1414)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1/config-properties=channel:add(value=DEV.APP.SVRCONN)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1/config-properties=transportType:add(value=CLIENT)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1/config-properties=queueManager:add(value=QM1)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1/config-properties=username:add(value=app)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1/config-properties=password:add(value=passw0rd)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1/config-properties=applicationName:add(value=eap)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1:write-attribute(name=min-pool-size,value=2)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1:write-attribute(name=max-pool-size,value=200)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1:write-attribute(name=min-pool-size,value=2)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1:write-attribute(name=max-pool-size,value=200)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1:write-attribute(name=pool-prefill,value=true)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1:write-attribute(name=pool-use-strict-min,value=false)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1:write-attribute(name=flush-strategy,value=FailingConnectionOnly)
+
+    /subsystem=resource-adapters/resource-adapter=wmq.jmsra/connection-definitions=QM1:write-attribute(name=pad-xid,value=false)
+
+    run-batch
+
+    quit
+  postconfigure.sh: |-
+    #!/usr/bin/env bash
+    set -x
+    echo "Executing postconfigure.sh"
+    $JBOSS_HOME/bin/jboss-cli.sh --file=$JBOSS_HOME/extensions/extensions.cli
