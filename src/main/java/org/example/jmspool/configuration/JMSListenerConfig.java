@@ -2,16 +2,13 @@ package org.example.jmspool.configuration;
 
 import org.example.jmspool.jms.JMSConsumer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.SimpleJmsListenerEndpoint;
-import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.connection.SingleConnectionFactory;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
 import javax.jms.ConnectionFactory;
-import javax.jms.QueueConnectionFactory;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -26,7 +23,7 @@ public class JMSListenerConfig {
     public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() throws NamingException {
         Context context = new InitialContext();
         log.info("Got Initial Context");
-        ConnectionFactory cf = new SingleConnectionFactory((QueueConnectionFactory) context.lookup("java:jboss/jms/ffmQueueCF2"));
+        ConnectionFactory cf = new SingleConnectionFactory((ConnectionFactory) context.lookup("java:jboss/jms/CF"));
         log.info("Created Caching ConnectionFactory");
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(cf);

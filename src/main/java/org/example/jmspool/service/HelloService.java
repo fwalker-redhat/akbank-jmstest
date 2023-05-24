@@ -17,7 +17,6 @@
 package org.example.jmspool.service;
 
 import org.example.jmspool.jms.DestinationProducer;
-import org.example.jmspool.rs.HelloWorld;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -27,7 +26,6 @@ import java.util.logging.Logger;
  * A simple CDI service which is able to say hello to someone
  *
  * @author Pete Muir
- *
  */
 @ApplicationScoped
 public class HelloService {

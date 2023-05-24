@@ -20,7 +20,6 @@ import org.example.jmspool.configuration.SpringContextLoader;
 import org.example.jmspool.service.HelloService;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

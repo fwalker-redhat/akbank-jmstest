@@ -1,6 +1,5 @@
 package org.example.jmspool.jms;
 
-import com.ibm.mq.jms.MQQueue;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
@@ -13,9 +12,9 @@ public class TemplateDestinationTuple {
     private JmsTemplate jmsTemplate;
     private Destination destination;
 
-    public TemplateDestinationTuple(JmsTemplate jmsTemplate, String queueName) throws JMSException {
+    public TemplateDestinationTuple(JmsTemplate jmsTemplate, Destination destination) throws JMSException {
         this.jmsTemplate = jmsTemplate;
-        this.destination = new MQQueue(queueName);
+        this.destination = destination;
     }
 
     public JmsTemplate getJmsTemplate() {
@@ -27,7 +26,8 @@ public class TemplateDestinationTuple {
     }
 
     public void send(final String message) {
-        if (jmsTemplate == null || destination == null) throw new IllegalStateException("JMSTemplate or Destination not set");
+        if (jmsTemplate == null || destination == null)
+            throw new IllegalStateException("JMSTemplate or Destination not set");
         jmsTemplate.send(this.destination, new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
                 return session.createTextMessage(message);
