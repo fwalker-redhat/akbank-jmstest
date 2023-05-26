@@ -35,8 +35,11 @@ public class HelloService {
     DestinationProducer producer;
 
     public void createHelloMessage(String destination, String message) throws Exception {
-        log.info("Sending message to destination " + destination + ": " + message);
-        producer.produceMessage(destination, message);
+        log.info("Preparing message to destination " + destination + ": " + message);
+
+        for (int i = 0; i < 100000; i++) {
+            producer.produceMessage(destination, message + ": " + (i+1));
+        }
     }
 
 }

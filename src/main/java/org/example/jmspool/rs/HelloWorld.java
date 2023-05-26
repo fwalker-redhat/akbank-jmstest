@@ -40,13 +40,13 @@ public class HelloWorld {
     @Inject
     HelloService helloService;
 
-    @Inject
-    SpringContextLoader springContextLoader;
+//    @Inject
+//    SpringContextLoader springContextLoader;
 
     @GET
     @Path("/message/{message}")
     public void sendMessage(@PathParam("message") String message, @QueryParam("destination") String destination) throws Exception {
-        springContextLoader.getApplicationContext().getStartupDate();
+//        springContextLoader.getApplicationContext().getStartupDate();
         log.info("Sending message to destination " + destination + ": " + message);
         helloService.createHelloMessage(destination, message);
     }
