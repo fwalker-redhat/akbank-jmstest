@@ -1,5 +1,6 @@
 package org.example.jmspool.configuration;
 
+import org.example.jmspool.jms.DestinationProducer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -18,7 +19,7 @@ public class SpringContextLoader {
     @PostConstruct
     public void populateApplicationContext() {
         log.info("Populating Application Context");
-        this.applicationContext = new AnnotationConfigApplicationContext(JMSListenerConfig.class);
+        this.applicationContext = new AnnotationConfigApplicationContext(AsyncConfig.class, DestinationProducer.class);
     }
 
     @Singleton
