@@ -17,7 +17,7 @@ public class AsyncConfig implements AsyncConfigurer {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
         threadPoolTaskExecutor.setCorePoolSize(5);
         threadPoolTaskExecutor.setMaxPoolSize(200);
-        threadPoolTaskExecutor.setQueueCapacity(2000);
+        threadPoolTaskExecutor.setQueueCapacity(10000);
         threadPoolTaskExecutor.initialize();
         return threadPoolTaskExecutor;
     }

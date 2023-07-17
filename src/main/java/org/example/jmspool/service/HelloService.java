@@ -17,9 +17,9 @@
 package org.example.jmspool.service;
 
 import org.example.jmspool.jms.DestinationProducer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.util.logging.Logger;
 
 /**
@@ -27,19 +27,19 @@ import java.util.logging.Logger;
  *
  * @author Pete Muir
  */
-@ApplicationScoped
+@Service
 public class HelloService {
 
     private static final Logger log = Logger.getLogger(HelloService.class.getName());
-    @Inject
-    DestinationProducer producer;
+    private final DestinationProducer producer;
+
+    public HelloService(DestinationProducer producer) {
+        this.producer = producer;
+    }
 
     public void createHelloMessage(String destination, String message) throws Exception {
         log.info("Preparing message to destination " + destination + ": " + message);
-
-        for (int i = 0; i < 100000; i++) {
-            producer.produceMessage(destination, message + ": " + (i+1));
-        }
+        producer.produceMessage(destination, message);
     }
 
 }

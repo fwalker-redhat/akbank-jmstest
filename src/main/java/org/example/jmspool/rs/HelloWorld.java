@@ -16,14 +16,13 @@
  */
 package org.example.jmspool.rs;
 
-import org.example.jmspool.configuration.SpringContextLoader;
 import org.example.jmspool.service.HelloService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
 import java.util.logging.Logger;
 
 /**
@@ -33,20 +32,19 @@ import java.util.logging.Logger;
  * @author gbrey@redhat.com
  */
 
-@Path("/")
+@RestController
 public class HelloWorld {
 
     private static final Logger log = Logger.getLogger(HelloWorld.class.getName());
-    @Inject
-    HelloService helloService;
 
-//    @Inject
-//    SpringContextLoader springContextLoader;
+    private final HelloService helloService;
 
-    @GET
-    @Path("/message/{message}")
-    public void sendMessage(@PathParam("message") String message, @QueryParam("destination") String destination) throws Exception {
-//        springContextLoader.getApplicationContext().getStartupDate();
+    public HelloWorld(HelloService helloService) {
+        this.helloService = helloService;
+    }
+
+    @GetMapping("/message/{message}")
+    public void sendMessage(@PathVariable("message") String message, @RequestParam("destination") String destination) throws Exception {
         log.info("Sending message to destination " + destination + ": " + message);
         helloService.createHelloMessage(destination, message);
     }
