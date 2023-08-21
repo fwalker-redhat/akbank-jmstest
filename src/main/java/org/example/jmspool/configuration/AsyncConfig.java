@@ -1,6 +1,5 @@
 package org.example.jmspool.configuration;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -15,9 +14,9 @@ public class AsyncConfig implements AsyncConfigurer {
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
-        threadPoolTaskExecutor.setCorePoolSize(5);
-        threadPoolTaskExecutor.setMaxPoolSize(200);
-        threadPoolTaskExecutor.setQueueCapacity(10000);
+        threadPoolTaskExecutor.setCorePoolSize(30);
+        threadPoolTaskExecutor.setMaxPoolSize(100);
+        threadPoolTaskExecutor.setQueueCapacity(7000);
         threadPoolTaskExecutor.initialize();
         return threadPoolTaskExecutor;
     }

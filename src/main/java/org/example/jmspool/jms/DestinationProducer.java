@@ -30,7 +30,7 @@ public class DestinationProducer {
         Context context = new InitialContext();
         log.info("Got Initial Context");
         CachingConnectionFactory ccf = new CachingConnectionFactory((ConnectionFactory) context.lookup("java:jboss/jms/CF"));
-        ccf.setSessionCacheSize(10);
+        ccf.setSessionCacheSize(100);
         cf = ccf;
     }
 
